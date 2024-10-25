@@ -34,20 +34,33 @@ namespace GameServer.InventorySystem
         }
 
         /// <summary>
-        /// 创建掉落物
+        /// 创建一个新的掉落物品实例。
         /// </summary>
-        /// <returns></returns>
+        /// <param name="itemId">物品的ID。</param>
+        /// <param name="pos">物品在地图上的位置。</param>
+        /// <param name="dire">物品的移动方向。</param>
+        /// <param name="amount">物品的数量。</param>
+        /// <returns>返回新创建的掉落物品实例。</returns>
         public DroppedItem NewDroppedItem(int itemId, Vector3 pos, Vector3 dire, int amount)
         {
+            // 创建一个新的掉落物品实体，使用EntityManager来生成一个新的实体ID。
+            // 通过itemId查找物品对应的单位信息，用于创建掉落物品。
             var item = new DroppedItem(EntityManager.Instance.NewEntityId(),
                 DataManager.Instance.UnitDict[DataManager.Instance.ItemDict[itemId].UnitId], _map, pos, dire, itemId, amount);
+            
+            // 将新创建的掉落物品添加到EntityManager中，以便于游戏引擎统一管理。
             EntityManager.Instance.AddEntity(item);
-
+        
+            // 将新的掉落物品添加到本地字典中，以便快速查找和管理。
             _itemDict.Add(item.EntityId, item);
             
+            // 通知地图有新的实体进入，以便地图可以对其进行管理和渲染。
             _map.EntityEnter(item);
-
+        
+            // 初始化掉落物品，开始其生命周期。
             item.Start();
+            
+            // 返回新创建的掉落物品实例。
             return item;
         }
 

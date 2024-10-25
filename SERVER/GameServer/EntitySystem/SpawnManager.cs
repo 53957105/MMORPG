@@ -34,18 +34,28 @@ namespace GameServer.EntitySystem
             SpawnDefine = define;
         }
 
+        /// <summary>
+        /// 初始化并生成游戏中的角色或NPC。
+        /// </summary>
         public void Start()
         {
+            // 解析角色或NPC的初始位置
             var pos = DataHelper.ParseVector3(SpawnDefine.Pos);
+            // 解析角色或NPC的初始方向
             var dire = DataHelper.ParseVector3(SpawnDefine.Dir);
-
+        
+            // 获取指定ID的角色或NPC定义信息
             var unitDefine = DataManager.Instance.UnitDict[SpawnDefine.UnitID];
+        
+            // 根据定义信息中的种类，决定生成怪物还是NPC
             if (unitDefine.Kind == "Monster")
             {
+                // 生成新的怪物实例
                 Actor = SpawnManager.Map.MonsterManager.NewMonster(SpawnDefine, SpawnDefine.UnitID, pos, dire, unitDefine.Name, SpawnDefine.Level);
             }
             else if (unitDefine.Kind == "Npc")
             {
+                // 生成新的NPC实例
                 Actor = SpawnManager.Map.NpcManager.NewNpc(SpawnDefine.UnitID, pos, dire, unitDefine.Name, SpawnDefine.Level);
             }
         }
