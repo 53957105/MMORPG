@@ -39,27 +39,53 @@ namespace GameServer.MapSystem
             return $"Map:\"{Define.Name}:{MapId}\"";
         }
 
+        // 定义地图类的构造函数
+        // 该构造函数用于初始化地图及其内部的各种管理器
+        // 参数 mapDefine: 包含地图基本信息的定义对象，用于配置地图属性
         public Map(MapDefine mapDefine)
         {
+            // 将传入的地图定义对象赋值给地图实例的Define属性
             Define = mapDefine;
-
+        
+            // 初始化AOI（Area of Interest）世界对象，用于管理游戏中的可见区域
+            // 参数20表示AOI世界的初始容量
             _aoiWord = new(20);
-
+        
+            // 初始化玩家管理器，负责处理地图中所有玩家的相关操作
             PlayerManager = new(this);
+            // 初始化怪物管理器，负责处理地图中所有怪物的行为和状态
             MonsterManager = new(this);
+            // 初始化NPC管理器，用于管理地图中所有非玩家角色
             NpcManager = new(this);
+            // 初始化导弹管理器，负责跟踪和更新地图中所有导弹的动态
             MissileManager = new(this);
+            // 初始化生成管理器，用于控制地图中怪物、NPC等的生成逻辑
             SpawnManager = new(this);
+            // 初始化掉落物品管理器，负责管理地图中所有掉落物品的状态
             DroppedItemManager = new(this);
         }
 
+        /// <summary>
+        /// 启动游戏中的各个管理器
+        /// </summary>
         public void Start()
         {
+            // 启动玩家管理器，处理玩家相关的初始化和启动逻辑
             PlayerManager.Start();
+            
+            // 启动怪物管理器，处理怪物相关的初始化和启动逻辑
             MonsterManager.Start();
+            
+            // 启动NPC管理器，处理NPC相关的初始化和启动逻辑
             NpcManager.Start();
+            
+            // 启动导弹管理器，处理导弹相关的初始化和启动逻辑
             MissileManager.Start();
+            
+            // 启动生成管理器，处理游戏世界中各种对象的生成逻辑
             SpawnManager.Start();
+            
+            // 启动掉落物品管理器，处理掉落物品相关的初始化和启动逻辑
             DroppedItemManager.Start();
         }
 

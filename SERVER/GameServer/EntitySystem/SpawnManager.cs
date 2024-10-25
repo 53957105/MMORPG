@@ -80,13 +80,24 @@ namespace GameServer.EntitySystem
             Map = map;
         }
 
+        /// <summary>
+        /// 启动方法，用于初始化和启动所有符合条件的生成器
+        /// </summary>
         public void Start()
         {
+            // 根据当前地图ID筛选出所有适用的规则
             var rules = DataManager.Instance.SpawnDict.Values.Where(r => r.MapId == Map.MapId);
+        
+            // 遍历每个筛选后的规则，创建并启动对应的生成器
             foreach (var rule in rules)
             {
+                // 创建一个新的生成器实例，传入当前实例和规则
                 var spawner = new Spawner(this, rule);
+        
+                // 将创建的生成器添加到生成器列表中
                 _spawners.Add(spawner);
+        
+                // 启动生成器
                 spawner.Start();
             }
         }

@@ -35,8 +35,12 @@ namespace GameServer.PlayerSystem
             _map = map;
         }
 
+        /// <summary>
+        /// 启动服务或进程的初始化方法。
+        /// </summary>
         public void Start()
         {
+            // 初始化数据库更新倒计时，设置为每秒更新一次
             _updateDbCountdown = UpdateDbSecond;
         }
 

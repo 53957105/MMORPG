@@ -18,28 +18,41 @@ namespace GameServer.Manager
     /// </summary>
     public class UpdateManager : Singleton<UpdateManager>
     {
+        // 定义一个只读字段Fps，用于表示每秒的帧数
         public readonly int Fps = 10;
+        
+        // 创建一个队列，用于存储待执行的任务
         private Queue<Action> _taskQueue = new();
+        
+        // 创建一个备用队列，用于在主队列满或其他特殊情况时存储任务
         private Queue<Action> _backupTaskQueue = new();
 
         private UpdateManager()
         {
         }
 
+        /// <summary>
+        /// 启动服务器各个管理器的初始化和启动过程
+        /// </summary>
         public void Start()
         {
+            // 启动DataManager实例的初始化
             DataManager.Instance.Start();
             Log.Information("[Server] DataManager初始化完成");
-
+        
+            // 启动EntityManager实例的初始化
             EntityManager.Instance.Start();
             Log.Information("[Server] EntityManager初始化完成");
-
+        
+            // 启动MapManager实例的初始化
             MapManager.Instance.Start();
             Log.Information("[Server] MapManager初始化完成");
-
+        
+            // 启动UserManager实例的初始化
             UserManager.Instance.Start();
             Log.Information("[Server] UserManager初始化完成");
-
+        
+            // 在调度器中注册一个定时任务，每帧调用Update方法
             Scheduler.Instance.Register(1000 / Fps, Update);
         }
 
