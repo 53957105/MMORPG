@@ -31,21 +31,34 @@ namespace MMORPG.Common.Tool
 
         private bool _stop;
 
+        /// <summary>
+        /// 初始化TimeWheel类的新实例。
+        /// </summary>
+        /// <param name="tickMs">可选参数，表示每个刻度的时间间隔（以毫秒为单位）。默认值为10毫秒。</param>
         public TimeWheel(int tickMs = 10) {
-
+            // 初始化添加列表
             _addList = new();
+            // 初始化备份添加列表
             _backupAddList = new();
+            // 初始化移除列表
             _removeList = new();
+            // 初始化备份移除列表
             _backupRemoveList = new();
+            // 初始化时隙数组，用于存储时间任务
             _slot = new LinkedList<TimeTask>[SlotCount * CircleCount];
+            // 初始化索引数组，用于跟踪每个圆的当前时隙
             _indexArr = new int[CircleCount];
+            // 初始化刻度时间间隔
             _tickMs = tickMs;
+            // 初始化停止标志为false
             _stop = false;
-
+        
+            // 初始化所有时隙
             for (int i = 0; i < SlotCount * CircleCount; i++)
             {
                 _slot[i] = new();
             }
+            // 初始化所有索引为0
             for (int i = 0; i < CircleCount; i++)
             {
                 _indexArr[i] = 0;
